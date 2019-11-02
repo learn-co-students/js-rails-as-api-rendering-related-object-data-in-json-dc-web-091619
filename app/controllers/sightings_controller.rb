@@ -14,7 +14,9 @@ class SightingsController < ApplicationController
         # } 
         # could also use include, indicates what models i want to nest.
         if sighting
-            render json: sighting, include: [:bird, :location]
+            # render json: sighting, include: [:bird, :location]
+            render json: sighting.to_json(:include => {:bird => {:only => [:name,:species]}, :location=> {:only => [:latitude, :longitude]}},:except => [:created_at, :updated_at]) 
+            #limits the nested attributes too.
         else
             render json: {message: "No sighting found with that id"}
         end
